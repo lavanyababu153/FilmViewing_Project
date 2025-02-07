@@ -652,3 +652,8 @@ def process_payment(request, subscription_id):
         'subscription': subscription,
         'confirm_url': reverse('confirm_subscription', args=[subscription.plan.id])
     })
+
+
+    
+def git(request):
+    return HttpResponse("hello")

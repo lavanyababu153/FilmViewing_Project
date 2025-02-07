@@ -24,4 +24,5 @@ urlpatterns = [
     path('liked_movies', views.liked_movies, name="liked_movies"),
     path('confirm/<int:plan_id>/', views.confirm, name='confirm'),
     path('process_payment/<int:subscription_id>/', views.process_payment, name='process_payment'),
+    path('git',views.git,name="git"),
 ]
