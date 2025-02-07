@@ -1,0 +1,72 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br><br>
+<div class="row">
+    <div class="col-xl">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Add Films</h5>
+                <small class="text-muted float-end">Default label</small>
+            </div>
+            <div class="card-body">
+                <form action="{% url 'add_film' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Title</label>
+                        <input type="text" class="form-control" id="basic-default-fullname" name="title" placeholder="Enter movie title" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="largeSelect" class="form-label">Genre</label>
+                        <select id="largeSelect" class="form-select form-select-lg" name="genre">
+                            <option>Choose Genre</option>
+                            {% for i in genres %}
+                                <option value="{{ i.id }}">{{ i.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="html5-date-input" class="col-md-2 col-form-label">Release Date</label><br>
+                        <div class="col-md-10">
+                            <input class="form-control" type="date" id="html5-date-input" name="release_date" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="html5-time-input" class="col-md-2 col-form-label">Duration</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" name="duration" id="html5-time-input" placeholder="Enter movie duration (e.g., 2h 30m)" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="html5-time-input" class="col-md-2 col-form-label">Director</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" name="director" id="html5-time-input" placeholder="Enter director name" />
+                        </div>
+                    </div>
+
+                    <!-- New Movie Description Field -->
+                    <div class="mb-3">
+                        <label for="movie-description" class="form-label">Movie Description</label>
+                        <textarea class="form-control" id="movie-description" name="description" rows="4" placeholder="Enter a brief description of the movie"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Upload Image</label>
+                        <input class="form-control" type="file" name="movie_poster" id="formFile" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Upload Movie</label>
+                        <input class="form-control" type="file" name="movie_file" id="formFile" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

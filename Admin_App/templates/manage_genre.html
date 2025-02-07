@@ -1,0 +1,38 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br>
+<br>
+
+
+              <div class="card">
+                <h5 class="card-header">Manage Genre</h5>
+                <div class="table-responsive text-nowrap">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                       
+                        <th>Genre</th>
+                        <th>Image</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                    {% for i in m %}
+                      <tr>
+                        <td> {{i.name}}</td>
+                        <td> <img src="{{ i.image.url }}" alt="" style="height: 100px; width:100px;" ></td>
+                        
+                          
+                        <td>  <a href="{% url 'genre_delete' i.id %}"><button type="submit" class="btn btn-outline-danger">Delete</button></a>
+                        <a href="{% url 'genre_update' i.id %}"><button type="submit" class="btn btn-outline-primary">Update</button></a></td>
+                      </tr>
+                      
+                    </tbody>
+                   {% endfor %}
+                  </table>
+                </div>
+              </div>
+              <!--/ Basic Bootstrap Table -->
+
+
+{% endblock%}

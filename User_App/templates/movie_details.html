@@ -1,0 +1,737 @@
+{% extends 'user_home.html' %}
+
+{% block content1 %}
+{% block search %}
+{% endblock %}
+<br><br><br>
+<br><br>
+
+<div class="movie-details-page">
+    <!-- Movie Banner -->
+    <div class="movie-banner">
+        <div class="movie-banner-container">
+            <!-- Movie Poster -->
+            <img src="{{ details.movie_poster.url }}" alt="{{ details.movie_name }}" class="movie-banner-image" id="poster-1">
+
+            <!-- Video Player -->
+            <video id="video-1" class="movie-video" controls style="display: none;">
+                <source src="{{ details.movie_file.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            <!-- Play/Pause Button -->
+            <button class="play-pause-btn" onclick="checkSubscriptionAndPlay(1)">
+                <span class="play-icon">▶</span>
+                <span class="pause-icon" style="display: none;">⏸</span>
+            </button>
+        </div>
+    </div>
+<div class="reaction-buttons-container">
+    <form method="post" action="{% url 'user_reaction' m_id=details.id action='like' %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="reaction-btn {% if user_reaction == 'like' %}active{% endif %}" id="like-btn">
+            👍 Like <span id="like-count">{{ details.like_count }}</span>
+        </button>
+    </form>
+
+    <form method="post" action="{% url 'user_reaction' m_id=details.id action='dislike' %}" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="reaction-btn {% if user_reaction == 'dislike' %}active{% endif %}" id="dislike-btn">
+            👎 Dislike <span id="dislike-count">{{ details.dislike_count }}</span>
+        </button>
+    </form>
+
+  <form method="post" action="{% url 'add_favourite' f_id=details.id add='fav' %}" style="display: inline;">
+    {% csrf_token %}
+    <button 
+        id="favorite-btn" 
+        class="favorite-btn" 
+        style="background: none; border: none; cursor: pointer;"
+    >
+        <span id="favorite-icon" class="{% if user_favorite %}filled{% else %}outline{% endif %}">
+            {% if user_favorite %} ❤️ {% else %} ♡ {% endif %}
+        </span>
+    </button>
+</form>
+</div>
+
+
+
+
+    <!-- Movie Details -->
+    <div class="movie-content">
+        <h1 class="movie-title">{{ details.movie_name }}</h1>
+        <p class="movie-director">Directed by: {{ details.director_name }}</p>
+        <p class="movie-genre">Genre: {{ details.movie_genre.name }}</p>
+        <p class="movie-release-date">Release Date: {{ details.release_date }}</p>
+        <p class="movie-description">{{ details.description }}</p>
+
+
+    </div>
+    
+
+    <!-- Cast Section -->
+    <div class="movie-cast">
+        <h2 class="cast-title">Cast</h2>
+        <div class="cast-slider-container">
+            <button class="slider-arrow left-arrow" onclick="scrollCast(-1)">&#8249;</button>
+            <div class="cast-slider" id="cast-slider">
+                {% for cast in cast %}
+                <div class="cast-card">
+                    <img src="{{ cast.image.url }}" alt="{{ cast.name }}" class="cast-image">
+                    <h3 class="cast-name">{{ cast.name }}</h3>
+                    <p class="cast-role">{{ cast.role }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            <button class="slider-arrow right-arrow" onclick="scrollCast(1)">&#8250;</button>
+        </div>
+    </div>
+</div>
+
+<div class="movie-comments">
+    <h2 class="comments-title">Comments</h2>
+    
+    <!-- Add Comment Form -->
+    <div class="comments-form">
+        <form method="post" action="{% url 'add_comment' v_id=details.id %}">
+            {% csrf_token %}
+            <textarea name="comment_text" placeholder="Add a comment..." required></textarea>
+            <button type="submit" class="post-button">Post Comment</button>
+        </form>
+    </div>
+
+    <!-- List of Comments -->
+    <div class="comments-list">
+        {% for comment in comments %}
+            <div class="comment">
+                <p><strong>{{ comment.user.username }}</strong>:</p>
+                <p>{{ comment.text }}</p>
+                <p class="comment-date">{{ comment.created_at }}</p>
+            </div>
+        {% empty %}
+            <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+
+<script>
+   
+    // Function to check subscription and payment status before playing the video
+function checkSubscriptionAndPlay(index) {
+    // Get subscription status and payment status from the template
+    const subscriptionStatus = "{{ subscription.status|default_if_none:'' }}";
+    const paymentStatus = "{{ subscription.payment_status|default_if_none:'' }}";
+
+    // Locate video and poster elements
+    const video = document.getElementById(`video-${index}`);
+    const poster = document.getElementById(`poster-${index}`);
+    const playIcon = document.querySelector(`#poster-${index} ~ .play-pause-btn .play-icon`);
+    const pauseIcon = document.querySelector(`#poster-${index} ~ .play-pause-btn .pause-icon`);
+
+    // Validate if required elements are present
+    if (!video || !poster || !playIcon || !pauseIcon) {
+        console.error("Video or related elements not found. Check the HTML structure.");
+        return;
+    }
+
+    // Ensure the user has an active subscription and payment is complete
+    if (subscriptionStatus !== "active" || paymentStatus !== "paid") {
+        showWarningMessage("Your subscription is inactive or payment is not completed. Please renew or complete the payment to watch this movie.");
+    } else {
+        // Toggle video playback if subscription and payment are valid
+        toggleVideo(video, poster, playIcon, pauseIcon);
+    }
+}
+
+// Function to show a simple warning message
+function showWarningMessage(message) {
+    const warningBox = document.createElement('div');
+    warningBox.className = 'warning-box';
+
+    warningBox.innerHTML = `
+        <span class="warning-message">${message}</span>
+        <button class="close-warning-btn" onclick="closeWarningMessage()">OK</button>
+    `;
+
+    document.body.appendChild(warningBox);
+}
+
+// Function to close the warning message and redirect to plan details page
+function closeWarningMessage() {
+    const warningBox = document.querySelector('.warning-box');
+    if (warningBox) {
+        warningBox.remove();
+    }
+
+    // Redirect to the plan details page
+    window.location.href = "{% url 'plan_details' %}";
+}
+
+// Toggle video visibility and play/pause state
+function toggleVideo(video, poster, playIcon, pauseIcon) {
+    if (video.style.display === "none") {
+        // Show video, hide poster, and play the video
+        poster.style.display = "none";
+        video.style.display = "block";
+        video.play();
+
+        // Update button icons
+        playIcon.style.display = "none";
+        pauseIcon.style.display = "inline";
+    } else {
+        // Pause video, show poster, and reset icons
+        video.pause();
+        poster.style.display = "block";
+        video.style.display = "none";
+
+        // Update button icons
+        playIcon.style.display = "inline";
+        pauseIcon.style.display = "none";
+    }
+}
+
+
+
+    // Scroll cast slider
+    function scrollCast(direction) {
+        const slider = document.getElementById("cast-slider");
+        const scrollAmount = 300; // Adjust based on card width
+        slider.scrollBy({
+            left: direction * scrollAmount,
+            behavior: "smooth",
+        });
+    }
+
+    // Format numbers for display (like YouTube-style formatting)
+    function formatNumber(num) {
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + 'M'; // Million
+        } else if (num >= 1000) {
+            return (num / 1000).toFixed(1) + 'K'; // Thousand
+        } else {
+            return num; // For numbers less than 1000
+        }
+    }
+
+    // Apply formatting when the page loads
+    window.onload = function () {
+        var likeCount = document.getElementById('like-count');
+        var dislikeCount = document.getElementById('dislike-count');
+
+        // Get original counts
+        var likeCountValue = parseInt(likeCount.innerText);
+        var dislikeCountValue = parseInt(dislikeCount.innerText);
+
+        // Update counts with formatted values
+        likeCount.innerText = formatNumber(likeCountValue);
+        dislikeCount.innerText = formatNumber(dislikeCountValue);
+    };
+</script>
+
+<style>
+/* General Styles */
+
+header {
+    background-color:rgba(11, 92, 143, 0.33); /* New background color */
+    color: #fff; /* Text color for better contrast */
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Optional shadow */
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color:rgb(0, 0, 0);
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+/* Movie Details Page */
+.movie-details-page {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Movie Banner */
+.movie-banner {
+    text-align: center;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.movie-banner img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.movie-banner-container {
+    position: relative;
+}
+
+/* Video Controls */
+.play-pause-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    padding: 10px 20px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+
+.play-pause-btn:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+    color: black;
+}
+
+.play-icon, .pause-icon {
+    display: inline;
+}
+
+/* Movie Content */
+.movie-content {
+    padding: 20px;
+}
+
+.movie-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.movie-director,
+.movie-genre,
+.movie-release-date,
+.movie-description {
+    font-size: 1rem;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+/* Cast Section */
+.movie-cast {
+    margin-top: 30px;
+}
+
+.cast-title {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.cast-slider-container {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cast-slider {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 10px;
+}
+
+.cast-card {
+    background-color: #444;
+    border-radius: 10px;
+    width: 180px;
+    text-align: center;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    transition: transform 0.3s ease;
+}
+
+.cast-card:hover {
+    transform: scale(1.1);
+}
+
+.cast-image {
+    width: 100%;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+.cast-name {
+    font-size: 1rem;
+    color: #fff;
+    font-weight: bold;
+}
+
+.cast-role {
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+/* Arrow Buttons */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    padding: 5px 10px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.left-arrow {
+    left: 10px;
+}
+
+.right-arrow {
+    right: 10px;
+}
+
+/* Comments Section */
+.movie-comments {
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #222;
+    border-radius: 12px;
+}
+
+.comments-title {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.comments-form {
+    margin-bottom: 20px;
+}
+
+.comments-form textarea {
+    width: 100%;
+    height: 120px;
+    background-color: #444;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    resize: none;
+}
+
+.comments-form button {
+    background-color: #ff5722;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.comments-form button:hover {
+    background-color: #e64a19;
+}
+
+.comments-list {
+    margin-top: 20px;
+}
+
+.comment {
+    background-color: #444;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.comment p {
+    font-size: 1rem;
+    color: #ccc;
+}
+
+.comment-date {
+    font-size: 0.9rem;
+    color: #999;
+    margin-top: 5px;
+}
+
+/* Like and Dislike Section */
+.like-dislike-section {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: start;
+    margin-top: 20px;
+}
+
+
+
+
+
+/* Warning Box Styling */
+.warning-box {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color:rgb(248, 247, 247);
+    color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 10000;  /* Ensure it's on top */
+    width: 80%;
+    max-width: 400px;
+    font-size: 16px;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Warning message text */
+.warning-message {
+    flex: 1;
+    margin-right: 10px;
+}
+
+/* Close Button */
+.close-warning-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.close-warning-btn:hover {
+    background-color: #d32f2f;
+}
+
+/* Animation for the warning box */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+
+
+
+/* Reaction Button Styling */
+.reaction-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background-color: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.reaction-btn:hover {
+    background-color: #333; /* Slight background on hover */
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* Like Icon */
+.like-icon {
+    font-size: 1.5rem;
+    color: #ff0000; /* YouTube's red color for "like" */
+}
+
+/* Dislike Icon */
+.dislike-icon {
+    font-size: 1.5rem;
+    color: #909090; /* YouTube's gray color for "dislike" */
+}
+
+/* Reaction Count */
+#like-count, #dislike-count {
+    font-size: 1rem;
+    color: white; /* Light text color for counts */
+}
+
+.reaction-buttons-container {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Space between buttons */
+    justify-content: flex-start; /* Align buttons to the left */
+}
+
+.reaction-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background-color: transparent;
+    border: 1px solid #444;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.reaction-btn:hover {
+    background-color: #333; /* Slight hover effect */
+    transform: scale(1.05); /* Zoom effect */
+}
+
+.reaction-btn.active {
+    background-color:rgb(225, 14, 14); /* Active button styling */
+    color: white;
+}
+
+#like-count, #dislike-count {
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+     .favorite-btn {
+        border: none;
+        background: none;
+        cursor: pointer;
+        font-size: 24px;
+    }
+
+    .filled {
+        color: red;
+    }
+
+    .
+
+
+
+    /* Responsiveness via Media Queries */
+
+/* Large Screens */
+@media (min-width: 1024px) {
+    .movie-details-page {
+        padding: 40px;
+    }
+
+    .movie-title {
+        font-size: 2.5rem;
+    }
+
+    .cast-card {
+        width: 250px;
+    }
+}
+
+/* Tablets and Medium Screens */
+@media (max-width: 1024px) {
+    .movie-title {
+        font-size: 2rem;
+    }
+
+    .cast-card {
+        width: 200px;
+    }
+}
+
+/* Small Screens (Phones) */
+@media (max-width: 768px) {
+    .movie-title {
+        font-size: 1.5rem;
+    }
+
+    .movie-banner img {
+        max-height: 400px;
+    }
+
+    .reaction-btn {
+        font-size: 1rem;
+        padding: 5px 10px;
+    }
+
+    .cast-card {
+        width: 180px;
+    }
+
+    .comments-form textarea {
+        height: 100px;
+    }
+
+    .comments-form button {
+        font-size: 0.9rem;
+    }
+}
+
+/* Very Small Screens (Small Phones) */
+@media (max-width: 480px) {
+    .movie-title {
+        font-size: 1.2rem;
+    }
+
+    .movie-banner img {
+        max-height: 300px;
+    }
+
+    .reaction-btn {
+        font-size: 0.9rem;
+        padding: 5px 10px;
+    }
+
+    .cast-card {
+        width: 150px;
+    }
+
+    .comments-form textarea {
+        height: 80px;
+    }
+
+    .comments-form button {
+        font-size: 0.8rem;
+    }
+
+    /* Add more compact adjustments for very small phones if necessary */
+    .movie-comments {
+        padding: 10px;
+    }
+}
+
+
+
+
+
+
+
+
+</style>
+{% endblock %}
+

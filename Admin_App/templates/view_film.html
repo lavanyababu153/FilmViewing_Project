@@ -1,0 +1,64 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br><br>
+
+<div class="container">
+    <!-- Section Title -->
+    <h2 class="text-center mb-5" style="font-weight: bold; color: black; font-family: 'Arial', sans-serif;">Movie Collection</h2>
+
+    <!-- Row for Cards -->
+    <div class="row justify-content-center">
+        {% for i in f %}
+            <div class="col-md-3 mb-4">
+                <!-- Netflix-style card -->
+                <div class="card netflix-card" style="position: relative; overflow: hidden; border-radius: 15px; background-color: #000;">
+                    <!-- Movie Poster -->
+                    <a href="{{ i.movie_file.url }}">
+                        <img src="{{ i.movie_poster.url }}" alt="{{ i.movie_name }}" 
+                             class="card-img-top netflix-img" 
+                             style="height: 350px; width: 100%; object-fit: cover; filter: brightness(0.6); transition: filter 0.3s ease;">
+                    </a>
+                    <!-- Gradient overlay -->
+                    <div class="netflix-gradient" style="position: absolute; bottom: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%); z-index: 1;"></div>
+                    <!-- Movie Details -->
+                    <div class="netflix-details" style="position: absolute; bottom: 10px; left: 0; right: 0; text-align: center; z-index: 2; color: white; padding: 10px;">
+                        <h5 class="card-title" style="font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);">{{ i.movie_name }}</h5>
+                        <p class="card-text" style="font-size: 0.9rem; margin-bottom: 2px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);">Director: {{ i.director_name }}</p>
+                        <p class="card-text" style="font-size: 0.8rem; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);">Duration: {{ i.duration }}</p>
+                        <p class="card-text" style="font-size: 0.8rem; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);">Genre: {{ i.movie_genre.name }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+/* Netflix-style hover effects */
+.netflix-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+}
+.netflix-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* Image hover effects */
+.netflix-img:hover {
+    filter: brightness(1);
+}
+
+/* Title styling */
+h2 {
+    letter-spacing: 1.5px;
+    color: #e50914; /* Netflix red */
+}
+
+/* Row and column spacing */
+.row {
+    margin-bottom: 20px;
+}
+</style>
+
+{% endblock %}

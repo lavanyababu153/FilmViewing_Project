@@ -1,0 +1,165 @@
+{% extends 'user_home.html' %}
+
+{% block content1 %}
+{% block  search %}
+{% endblock %}
+
+<br><br>
+<br><br>
+<br><br>
+<div class="container my-5">
+    <h1 class="text-center text-white mb-4">Your Plans</h1>
+    <br><br>
+    <br><br>
+    
+   
+
+    <!-- Active Plan (Card) -->
+    {% if active_plan %}
+    <div class="card mb-4 shadow-lg border-0 rounded-4 active-plan-card">
+        <div class="card-body">
+            <h2 class="card-title text-center text-white">Active Plan</h2>
+            <br>
+            <br>
+            <div class="row text-center text-white">
+                <div class="col-md-4"><strong>Name:</strong> {{ active_plan.plan.name }}</div>
+                <div class="col-md-4"><strong>Price:</strong> {{ active_plan.plan.price }}</div>
+                <div class="col-md-4"><strong>Expires On:</strong> {{ active_plan.end_date }}</div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center text-white">
+        <p>You currently have no active plans. Subscribe to a plan today!</p>
+    </div>
+    {% endif %}
+    <br>
+    <br>
+    <!-- Plan History (Table) -->
+    <h2 class="text-white mt-5">Plan History</h2>
+    <div class="table-responsive">
+        <table class="table table-dark table-striped table-hover rounded-4">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Plan Name</th>
+                    <th>Price</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subscription in plan_history %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ subscription.plan.name }}</td>
+                    <td>{{ subscription.plan.price }}</td>
+                    <td>{{ subscription.start_date }}</td>
+                    <td>{{ subscription.end_date }}</td>
+                    <td>
+                        {% if subscription.status == "active" %}
+                        <span class="badge bg-success">Active</span>
+                        {% else %}
+                        <span class="badge bg-secondary">Expired</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No subscription history found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+/* Styles for Active Plan */
+
+header {
+    background-color:rgba(11, 92, 143, 0.33); /* New background color */
+    color: #fff; /* Text color for better contrast */
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Optional shadow */
+}
+
+body {
+    background-color: rgb(5, 3, 3); /* Dark background */
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+}
+
+.active-plan-card {
+    background-color: rgb(9, 2, 2);
+    border: 2px solid #e50914;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+}
+
+/* Table Styling */
+.table {
+    color: black;
+}
+
+.table th {
+    background-color: #e50914;
+    color: white;
+    text-transform: uppercase;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f40612;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .movie-section .movie-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    .movie-section .movie-poster {
+        height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .movie-section .movie-list {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+    .movie-section .movie-poster {
+        height: 250px;
+    }
+    .movie-section .movie-details h3 {
+        font-size: 18px;
+    }
+    .movie-section .movie-details p {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-section .movie-list {
+        grid-template-columns: 1fr; /* Single column for small screens */
+    }
+    .movie-section .movie-poster {
+        height: 200px;
+    }
+    .movie-section .movie-details {
+        padding: 10px;
+    }
+    .movie-section .movie-details h3 {
+        font-size: 16px;
+    }
+    .movie-section .movie-details p {
+        font-size: 12px;
+    }
+    .movie-section .view-details-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}
+</style>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br><br>
+ <div class="row">
+    <div class="col-xl">
+      <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Update Genre</h5>
+          <small class="text-muted float-end">Edit Genre Details</small>
+        </div>
+        <div class="card-body">
+          {% for i in u %}
+            <form action="{% url 'update_genre' i.id %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %} 
+
+              <div class="mb-3">
+                <label class="form-label" for="basic-default-fullname">Add Genre</label>
+                <input type="text" class="form-control" name="name" id="basic-default-fullname" value="{{ i.name }}" />
+              </div>
+
+              <div class="mb-3">
+                <label for="formFile" class="form-label">Upload Image</label>
+                
+                {% if i.image %}
+                  <div>
+                    <img src="{{ i.image.url }}" alt="Current Image" style="max-width: 200px;"/>
+                  </div>
+                {% endif %}
+
+                <input class="form-control" type="file" name="image" id="formFile" />
+              </div>
+              
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}

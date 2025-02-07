@@ -1,0 +1,92 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br><br>
+
+<div class="container">
+    <!-- Section Title -->
+    <h2 class="text-center mb-5" style="font-weight: bold; color:rgb(0, 0, 0); font-family: 'Arial', sans-serif;">Cast</h2>
+
+    <!-- Row for Cards -->
+ <div class="row justify-content-center">
+
+<!-- Cast Section -->
+
+            {% for i in h %}
+                <div class="col-md-3 mb-4">
+                    <div class="card netflix-card shadow-lg">
+                        <div class="card-body text-center">
+                          <img src="{{i.image.url}}" alt="cast_image" class="cast-image">
+                            <h3 class="cast-name">{{ i.name }}</h3>
+                            <p class="cast-role">{{ i.role }}</p>
+                            <p class="cast-role">{{ i.movie.movie_name }}</p>
+                        </div>
+                    </div>
+                </div>
+                
+            {% endfor %}    
+         
+  
+
+
+   
+</div> 
+<style>
+
+body {
+    background-color: #f8f9fa; /* Light background */
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+.movie-cast {
+    margin-top: 30px;
+}
+
+
+.cast-image {
+    width: 100%;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Card Styling */
+.netflix-card {
+    background-color: #ffffff; /* White card background */
+    border-radius: 15px; /* Rounded corners */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    padding: 15px;
+}
+
+.netflix-card:hover {
+    transform: scale(1.05); /* Subtle zoom on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+/* Card Title Styling */
+.card-title {
+    color: #e50914; /* Netflix red */
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+/* Card Text Styling */
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 1.1rem;
+    }
+
+    .card-text {
+        font-size: 0.8rem;
+    }
+}
+.card-text {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+</style>
+{% endblock %}

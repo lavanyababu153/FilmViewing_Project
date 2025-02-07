@@ -1,0 +1,88 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br><br>
+
+<div class="container">
+    <!-- Section Title -->
+    <h2 class="text-center mb-5" style="font-weight: bold; color: #e50914; font-family: 'Arial', sans-serif;">Available Plans</h2>
+
+    <!-- Row for Cards -->
+    <div class="row justify-content-center">
+        {% for i in w %}
+            <div class="col-md-4 col-lg-3 mb-4">
+                <div class="card netflix-card shadow-lg">
+                    <div class="card-body text-center">
+                        <!-- Plan Name -->
+                        <h5 class="card-title" style="font-size: 1.3rem; font-weight: bold; color: #e50914;">{{ i.name }}</h5>
+
+                        <!-- Plan Details -->
+                        <p class="card-text" style="font-size: 0.9rem; color: #333;">
+                            <strong>Duration:</strong> {{ i.duration_days }} days <br>
+                            <strong>Price:</strong> ${{ i.price }} <br>
+                            <strong>Streaming Quality:</strong> {{ i.streaming_quality }} <br>
+                            <strong>Advertisements:</strong> {{ i.advertisements|yesno:"Yes,No" }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+/* General Styling */
+body {
+    background-color: #f8f9fa; /* Light background */
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+
+/* Title Styling */
+h2 {
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Card Styling */
+.netflix-card {
+    background-color: #ffffff; /* White card background */
+    border-radius: 15px; /* Rounded corners */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    padding: 15px;
+}
+
+.netflix-card:hover {
+    transform: scale(1.05); /* Subtle zoom on hover */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* Shadow effect */
+}
+
+/* Card Title Styling */
+.card-title {
+    color: #e50914; /* Netflix red */
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+/* Card Text Styling */
+.card-text {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 1.1rem;
+    }
+
+    .card-text {
+        font-size: 0.8rem;
+    }
+}
+</style>
+
+{% endblock %}

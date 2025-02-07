@@ -1,0 +1,151 @@
+{% extends 'user_home.html' %}
+{% block content1 %}
+{% block search %}
+{% endblock %}
+<br><br><br><br>
+<br><br>
+
+<!-- Heading outside the header -->
+<div class="container my-5">
+    <h1 class="text-center mb-4 text-white">Complete Your Payment</h1>
+</div>
+<br><br>
+
+<!-- Payment Form Section -->
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4 payment-card">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Payment Details</h5>
+
+                  <form method="post" action="{% url 'process_payment' subscription.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                    <label for="payment_method" class="form-label">Choose Payment Method</label>
+                    <select class="form-select" id="payment_method" name="payment_method" required>
+                    <option value="credit_card">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="bank_transfer">Bank Transfer</option>
+                </select>
+            </div>
+
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input type="text" class="form-control" id="amount" value="{{ subscription.plan.price }}" disabled>
+                        </div>
+
+                        <button type="submit" class="btn btn-danger w-100 mt-3">
+                            Pay Now
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // Display alerts based on Django messages
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'success' %}
+          Swal.fire({
+            icon: 'success',
+            title: 'Payment Successful',
+            text: '{{ message }}',
+            showConfirmButton: false,
+            timer: 3000
+          }).then(() => {
+            window.location.href = "{{ confirm_url }}"; // Redirect after showing success message
+          });
+        {% elif message.tags == 'error' %}
+          Swal.fire({
+            icon: 'error',
+            title: 'Payment Failed',
+            text: '{{ message }}',
+            showConfirmButton: true,
+          });
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+</script>
+
+
+<style>
+header {
+    background-color: rgba(11, 92, 143, 0.33); /* New background color */
+    color: #fff; /* Text color for better contrast */
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Optional shadow */
+}
+
+body {
+    background-color: rgb(5, 3, 3); /* Dark background */
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+}
+
+.payment-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    color: #333;
+    transition: all 0.3s ease-in-out;
+}
+
+.payment-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+    font-size: 1.8rem;
+    color: #e50914;
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+}
+
+.form-select, .form-control {
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: #e50914;
+    box-shadow: 0 0 5px rgba(224, 9, 20, 0.5);
+}
+
+button[type="submit"] {
+    background-color: #e50914;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 12px 18px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+button[type="submit"]:hover {
+    background-color: #f40612;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+button[type="submit"]:focus {
+    outline: none;
+}
+</style>
+
+{% endblock %}

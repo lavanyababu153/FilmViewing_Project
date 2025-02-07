@@ -1,0 +1,62 @@
+{% extends 'user_home.html' %}
+{% block content1 %}
+{% block search%}
+{% endblock %}
+<br><br>
+<br>
+<br><br>
+<div class="container text-center my-5">
+    <h1 class="text-white">Subscription Confirmation</h1>
+    <br>
+    <div class="card shadow-lg border-0 rounded-4 confirm-card mx-auto" style="max-width: 500px;">
+        <div class="card-body text-center">
+            <h2 class="card-title text-dark">Confirmation</h2>
+            <p class="text-dark">
+                Are you sure you want to subscribe to the <strong>{{ plan.plan.name }}</strong> plan?
+            </p>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Price:</strong> {{ plan.plan.price }}</li>
+                <li class="list-group-item"><strong>Duration:</strong> {{ plan.plan.duration_days }} days</li>
+                <li class="list-group-item"><strong>Quality:</strong> {{ plan.plan.streaming_quality }}</li>
+                <li class="list-group-item"><strong>Advertisements:</strong> {{ plan.plan.advertisements|yesno:"Yes,No" }}</li> 
+            </ul>
+            <a href="{% url 'plan_details' %}" class="btn btn-danger mt-3">Back to Plans</a><br>
+            <!-- Corrected link to the process_payment view with subscription_id -->
+            <a href="{% url 'process_payment' subscription_id=plan.id %}" class="btn btn-danger mt-3">Continue to Payment</a>
+        </div>
+    </div>
+</div>
+
+<style>
+header {
+    background-color:rgba(11, 92, 143, 0.33); /* New background color */
+    color: #fff; /* Text color for better contrast */
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Optional shadow */
+}
+
+body {
+    background-color: rgb(5, 3, 3); /* Dark background */
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+}
+
+.confirm-card {
+    background-color: #ffffff;
+    color: #333;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+    
+}
+
+.confirm-card .card-title {
+    font-size: 1.8rem;
+    color: #e50914;
+}
+
+.confirm-card ul {
+    text-align: left;
+}
+</style>
+{% endblock %}

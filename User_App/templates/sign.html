@@ -1,0 +1,453 @@
+{% load static %}
+<html>
+
+
+<head>
+	<!-- Basic need -->
+	<title>Open Pediatrics</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<link rel="profile" href="#">
+
+    <!--Google Font-->
+    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+	<!-- Mobile specific meta -->
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone-no">
+
+	<!-- CSS files -->
+	<link rel="stylesheet" href="{% static 'css/plugins.css'%}">
+	<link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <style>
+
+
+/* General styling for the signup form */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    z-index: 1000;
+}
+
+.login-content {
+    background: #fff; /* White background for the form */
+    padding: 30px 40px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    width: 100%;
+    max-width: 400px;
+    position: relative;
+}
+
+.login-content h3 {
+    font-family: 'Dosis', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Close button */
+.login-content .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: #333;
+    font-size: 20px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.login-content .close:hover {
+    color: #ff6347; /* Highlight color */
+}
+
+/* Input fields */
+.login-content input[type="text"],
+.login-content input[type="email"],
+.login-content input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.login-content input[type="text"]:focus,
+.login-content input[type="email"]:focus,
+.login-content input[type="password"]:focus {
+    border-color: #007bff; /* Highlighted border */
+}
+
+/* Labels */
+.login-content label {
+    font-family: 'Nunito', sans-serif;
+    font-size: 14px;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Submit button */
+.login-content button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff; /* Primary button color */
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-content button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* Adjust spacing for the rows */
+.login-content .row {
+    margin-bottom: 20px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .login-content {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .login-content h3 {
+        font-size: 20px;
+    }
+}
+
+/* Header background styling */
+.ht-header {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text for better contrast */
+    padding: 20px 0; /* Adjust padding for spacing */
+    position: relative; /* Ensures proper stacking */
+    z-index: 10;
+}
+
+/* Navbar link styling */
+.ht-header .navbar-nav > li > a {
+    color: #fff; /* White text color for navigation links */
+    font-family: 'Dosis', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+.ht-header .navbar-nav > li > a:hover {
+    color: #ff6347; /* Highlight color for hover effect */
+}
+
+/* Dropdown menu styling */
+.ht-header .dropdown-menu {
+    background-color: #222; /* Darker dropdown background */
+    border: none;
+    border-radius: 4px;
+}
+
+.ht-header .dropdown-menu > li > a {
+    color: #fff; /* White text for dropdown items */
+    font-size: 14px;
+    padding: 10px 15px;
+    transition: background-color 0.3s ease;
+}
+
+.ht-header .dropdown-menu > li > a:hover {
+    background-color: #333; /* Slightly lighter background on hover */
+}
+
+/* Logo styling */
+.ht-header .logo img {
+    max-height: 60px;
+}
+
+/* Navbar toggle button for mobile view */
+.ht-header .navbar-toggle {
+    background-color: #444; /* Dark toggle button */
+    border: none;
+}
+
+.ht-header .navbar-toggle:hover {
+    background-color: #555; /* Slightly lighter on hover */
+}
+
+.ht-header .navbar-toggle .icon-bar {
+    background-color: #fff; /* White icon bars */
+}
+
+/* Adjustments for mobile responsiveness */
+@media (max-width: 768px) {
+    .ht-header {
+        padding: 10px 0;
+    }
+
+    .ht-header .navbar-nav > li > a {
+        font-size: 12px;
+    }
+}
+
+
+</style>
+ 
+
+
+</head>
+
+<header class="ht-header full-width-hd">
+		<div class="row">
+			<nav id="mainNav" class="navbar navbar-default navbar-custom">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header logo">
+
+
+                 <div class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					    <span class="sr-only">Toggle navigation</span>
+					    <div id="nav-icon1">
+							<span></span>
+							<span></span>
+							<span></span>
+						</div>
+				    </div>
+				    <a href="index-2.html"><img class="logo" src="{% static 'images/logo1.png'%}" alt="" width="119" height="58"></a>
+			    </div>
+
+
+
+                <div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav flex-child-menu menu-left">
+						<li class="hidden">
+							<a href="#page-top"></a>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							Home <i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="index-2.html">Home 01</a></li>
+								<li><a href="homev2.html">Home 02</a></li>
+								<li><a href="homev3.html">Home 03</a></li>
+							</ul>
+						</li>	
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							movies<i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<!-- <li class="dropdown">
+									<a href="#">about us <i class="fa fa-caret-right" aria-hidden="true"></i></a>
+									<ul class="dropdown-menu level2">
+										<li><a href="aboutv1.html">About Us 01</a></li>
+										<li><a href="aboutv2.html">About Us 02</a></li>
+									</ul>
+								</li> -->
+								<li><a href="moviegrid.html">Movie grid</a></li>
+								<li><a href="moviegridfw.html">movie grid full width</a></li>
+								<li><a href="movielist.html">Movie list</a></li>
+								<li class="it-last"><a href="moviesingle.html">Movie single</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							celebrities <i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="celebritygrid01.html">celebrity grid 01</a></li>
+								<li><a href="celebritygrid02.html">celebrity grid 02 </a></li>
+								<li><a href="celebritylist.html">celebrity list</a></li>
+								<li class="it-last"><a href="celebritysingle.html">celebrity single</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							news <i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="bloglist.html">blog List</a></li>
+								<li><a href="bloggrid.html">blog Grid</a></li>
+								<li class="it-last"><a href="blogdetail.html">blog Detail</a></li>
+							</ul>
+						</li>
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							community <i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="userfavoritegrid.html">user favorite grid</a></li>
+								<li><a href="userfavoritelist.html">user favorite list</a></li>
+								<li><a href="userprofile.html">user profile</a></li>
+								<li class="it-last"><a href="userrate.html">user rate</a></li>
+							</ul>
+						</li>
+					</ul>
+					<ul class="nav navbar-nav flex-child-menu menu-right">
+						<li class="dropdown first">
+							<a class="btn btn-default dropdown-toggle lv1" data-toggle="dropdown" data-hover="dropdown">
+							pages <i class="fa fa-angle-down" aria-hidden="true"></i>
+							</a>
+							<ul class="dropdown-menu level1">
+								<li><a href="landing.html">Landing</a></li>
+								<li><a href="404.html">404 Page</a></li>
+								<li class="it-last"><a href="comingsoon.html">Coming soon</a></li>
+							</ul>
+						</li> 
+
+
+                        		
+				</div>
+			<!-- /.navbar-collapse -->
+	    </nav>
+	    <!-- search form -->
+		</div>
+
+
+	
+</header>
+
+<div class="latestnew full-width">
+		<div class="row">
+			<div class="col-md-9">
+				<div class="latestnewv2">
+				
+				</div>
+			</div>
+			
+		</div>
+	
+</div>
+<center>
+<br><br>
+    <body>
+<!-- signup form popup - updated to make it visible by default -->
+<div class="login-wrapper" id="signup-content" style="display: block;">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Sign Up</h3>
+        <form method="post" action="{% url 'signup' %}">
+        {% csrf_token %}
+            <div class="row">
+                <label for="username-2">
+                    Username:
+                    <input type="text" name="username" id="username-2" placeholder="Hugh Jackman" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" required="required" />
+                </label>
+            </div>
+           
+            <div class="row">
+                <label for="email-2">
+                    Your Email:
+                    <input type="email" name="email" id="email-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[a-z]).*$" required="required" style="text-transform: none;" />
+                </label>
+            </div>
+
+            <div class="row">
+                <label for="phone">
+                    Phone:
+                    <input type="text" name="phone" id="phone" required="required" />
+                </label>
+            </div>
+
+            <div class="row">
+                <label for="password-2">
+                    Password:
+                    <input type="password" name="password" id="password-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" style="text-transform: none;" />
+                </label>
+            </div>
+
+            <div class="row">
+                <label for="repassword-2">
+                    Re-type Password:
+                    <input type="password" name="repassword" id="repassword-2" placeholder="" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" style="text-transform: none;" />
+                </label>
+            </div>
+
+            <div class="row">
+                <button type="submit">Sign Up</button>
+            </div>
+        </form>
+    </div>
+</div>
+    </body>
+ 
+
+ <footer class="ht-footer full-width-ft">
+	<div class="row">
+		<div class="flex-parent-ft">
+			<div class="flex-child-ft item1">
+				 <a href="index-2.html"><img class="logo" src="{% static 'images/logo1.png'%}" alt=""></a>
+				 <p>5th Avenue st, manhattan<br>
+				New York, NY 10001</p>
+				<p>Call us: <a href="#">(+01) 202 342 6789</a></p>
+			</div>
+			<div class="flex-child-ft item2">
+				<h4>Resources</h4>
+				<ul>
+					<li><a href="#">About</a></li> 
+					<li><a href="#">Blockbuster</a></li>
+					<li><a href="#">Contact Us</a></li>
+					<li><a href="#">Forums</a></li>
+					<li><a href="#">Blog</a></li>
+					<li><a href="#">Help Center</a></li>
+				</ul>
+			</div>
+			<div class="flex-child-ft item3">
+				<h4>Legal</h4>
+				<ul>
+					<li><a href="#">Terms of Use</a></li> 
+					<li><a href="#">Privacy Policy</a></li>	
+					<li><a href="#">Security</a></li>
+				</ul>
+			</div>
+			<div class="flex-child-ft item4">
+				<h4>Account</h4>
+				<ul>
+					<li><a href="#">My Account</a></li> 
+					<li><a href="#">Watchlist</a></li>	
+					<li><a href="#">Collections</a></li>
+					<li><a href="#">User Guide</a></li>
+				</ul>
+			</div>
+			<div class="flex-child-ft item5">
+				<h4>Newsletter</h4>
+				<p>Subscribe to our newsletter system now <br> to get latest news from us.</p>
+				<form action="#">
+                {% csrf_token %}
+					<input type="text" placeholder="Enter your email">
+				</form>
+				<a href="#" class="btn">Subscribe now <i class="ion-ios-arrow-forward"></i></a>
+			</div>
+		</div>
+		<div class="ft-copyright">
+			<div class="ft-left">
+				<p><a target="_blank" href="https://www.templateshub.net">Templates Hub</a></p>
+			</div>
+			<div class="backtotop">
+				<p><a href="#" id="back-to-top">Back to top  <i class="ion-ios-arrow-thin-up"></i></a></p>
+			</div>
+		</div>
+	</div>
+</footer>
+
+    
+</html>

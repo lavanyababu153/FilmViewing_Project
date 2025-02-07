@@ -1,0 +1,24 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br><br>
+
+<div class="container">
+    <div class="comments-list">
+         <h5 ><strong>{{films.movie.movie_name}}</strong></h5>
+        {% for comment in film %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><strong>{{ comment.user.username }}</strong></h5>
+                    <p class="card-text">{{ comment.text }}</p>
+                    <p class="text-muted small comment-date">{{ comment.created_at }}</p>
+                </div>
+            </div>
+        {% empty %}
+            <div class="alert alert-info">
+                <p>No comments yet. Be the first to comment!</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

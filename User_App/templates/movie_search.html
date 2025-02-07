@@ -1,0 +1,165 @@
+{% extends 'user_home.html' %}
+{% block content %}
+
+<div class="movie-section">
+    {% if movies %}
+        <div class="movie-list">
+            {% for movie in movies %}
+                <div class="movie-item">
+                    <img src="{{ movie.movie_poster.url }}" alt="{{ movie.movie_name }} poster" class="movie-poster">
+                    <div class="movie-details">
+                        <h3>{{ movie.movie_name }}</h3>
+                        <p>Director: {{ movie.director_name }}</p>
+                        <p>Duration: {{ movie.duration }}</p>
+                        <p>Genre: {{ movie.movie_genre.name }}</p>
+                        <a href="{% url 'movie_details' movie.id %}" class="view-details-btn">Read More</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="no-movies">No movies found for the selected genre.</p>
+    {% endif %}
+</div>
+
+<style>
+/* Scoped Styling for the Movie Section */
+body {
+    background-color: black;
+}
+
+.movie-section {
+    padding: 10px;
+    background-color: black;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+/* Movie List Grid */
+.movie-section .movie-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Individual Movie Item Card */
+.movie-section .movie-item {
+    background-color: #222;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-section .movie-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.8);
+}
+
+/* Movie Poster Styling */
+.movie-section .movie-poster {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+}
+
+.movie-section .movie-item:hover .movie-poster {
+    opacity: 0.9;
+}
+
+/* Movie Details */
+.movie-section .movie-details {
+    padding: 15px;
+    text-align: center;
+}
+
+.movie-section .movie-details h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.movie-section .movie-details p {
+    font-size: 14px;
+    color: #b3b3b3;
+    margin: 5px 0;
+}
+
+/* View Details Button */
+.movie-section .view-details-btn {
+    display: inline-block;
+    background-color: #e50914;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.movie-section .view-details-btn:hover {
+    background-color: #f40612;
+}
+
+/* No Movies Found Message */
+.movie-section .no-movies {
+    text-align: center;
+    font-size: 18px;
+    color: #b3b3b3;
+    margin-top: 50px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .movie-section .movie-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    .movie-section .movie-poster {
+        height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .movie-section .movie-list {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+    .movie-section .movie-poster {
+        height: 250px;
+    }
+    .movie-section .movie-details h3 {
+        font-size: 18px;
+    }
+    .movie-section .movie-details p {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-section .movie-list {
+        grid-template-columns: 1fr; /* Single column for small screens */
+    }
+    .movie-section .movie-poster {
+        height: 200px;
+    }
+    .movie-section .movie-details {
+        padding: 10px;
+    }
+    .movie-section .movie-details h3 {
+        font-size: 16px;
+    }
+    .movie-section .movie-details p {
+        font-size: 12px;
+    }
+    .movie-section .view-details-btn {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}
+</style>
+
+{% endblock %}

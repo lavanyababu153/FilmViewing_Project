@@ -1,0 +1,88 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br><br>
+ <div class="row">
+    <div class="col-xl">
+      <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Update Films</h5>
+          <small class="text-muted float-end">Edit Movie Details</small>
+        </div>
+        <div class="card-body">
+          {% for i in t %}
+            <form action="{% url 'update_movie' i.id %}" method="post" enctype="multipart/form-data">
+              {% csrf_token %}
+              
+              <div class="mb-3">
+                <label class="form-label" for="basic-default-fullname">Title</label>
+                <input type="text" class="form-control" id="basic-default-fullname" name="title" value="{{ i.movie_name }}"/>
+              </div>
+              
+             
+
+              <div class="mt-2 mb-3">
+                <label for="largeSelect" class="form-label">Genre</label>
+                <select id="largeSelect" class="form-select form-select-lg" name="genre">
+                  {% for genre in n %}
+                    <option value="{{ genre.id }}" {% if genre.id == i.movie_genre.id %}selected{% endif %}>
+                      {{ genre.name }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
+
+              <div class="mb-3 row">
+                <label for="html5-date-input" class="col-md-2 col-form-label">Release Date</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="date" id="html5-date-input" value="{{ i.release_date|date:'Y-m-d' }}" name="release_date"/>
+                </div>
+              </div>
+
+              <div class="mb-3 row">
+                <label for="html5-time-input" class="col-md-2 col-form-label">Duration</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" value="{{ i.duration }}" name="duration" id="html5-time-input"/>
+                </div>
+              </div>
+
+              <div class="mb-3 row">
+                <label for="html5-time-input" class="col-md-2 col-form-label">Director</label>
+                <div class="col-md-10">
+                  <input class="form-control" type="text" value="{{ i.director_name }}" name="director" id="html5-time-input"/>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="formFile" class="form-label">Upload Image</label>
+                {% if i.movie_poster %}
+                  <div><img src="{{ i.movie_poster.url }}" alt="Current Poster" style="max-width: 200px;"></div>
+                {% endif %}
+                <input class="form-control" type="file" name="movie_poster" id="formFile" />
+              </div>
+
+
+               <div class="mb-3">
+                <label class="form-label" for="movie-description">Movie Description</label>
+                <textarea class="form-control" id="movie-description" name="description" rows="4">{{ i.description  }}</textarea>
+              </div>
+
+              <div class="mb-3">
+                <label for="formFile" class="form-label">Upload Movie</label>
+                {% if i.movie_file %}
+                  <div><video controls style="max-width: 200px;">
+                    <source src="{{ i.movie_file.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video></div>
+                {% endif %}
+                <input class="form-control" type="file" name="movie_file" id="formFile" />
+              </div>
+              
+              <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}
