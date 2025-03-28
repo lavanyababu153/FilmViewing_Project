@@ -1,0 +1,41 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br>
+<br>
+
+
+              <div class="card">
+                <h5 class="card-header">View Users</h5>
+                <div class="table-responsive text-nowrap">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>password</th>
+                        
+                        
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                    {% for i in j %}
+                      <tr>
+                        
+                        <td>{{i.username}}</td>
+                        <td>{{i.email}}</td>
+                        <td>{{i.phone}}</td>
+                        <td>***********</td>
+                        <td>
+                          
+                      </tr>
+                      {% endfor %}
+                      
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <!--/ Basic Bootstrap Table -->
+
+
+{% endblock%}

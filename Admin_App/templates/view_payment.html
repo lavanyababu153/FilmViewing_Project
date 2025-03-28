@@ -1,0 +1,87 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+
+<br>
+<br>
+
+<div class="container text-center my-5">
+    <h1 class="text-dark">Subscription and Payment Details</h1>
+    <br>
+    <div class="card shadow-lg border-0 rounded-4 confirm-card mx-auto" style="max-width: 600px;">
+        <div class="card-body text-center">
+            <h2 class="card-title text-dark">Subscription Details</h2>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Subscriber Name:</strong> {{ subscription.user.username }}</li>
+                <li class="list-group-item"><strong>Email:</strong> {{ subscription.user.email }}</li>
+                <li class="list-group-item"><strong>Plan Name:</strong> {{ subscription.plan.name }}</li>
+                <li class="list-group-item"><strong>Price:</strong> ₹{{ subscription.plan.price }}</li>
+                <li class="list-group-item"><strong>Duration:</strong> {{ subscription.plan.duration_days }} days</li>
+                <li class="list-group-item"><strong>Streaming Quality:</strong> {{ subscription.plan.streaming_quality }}</li>
+                <li class="list-group-item"><strong>Advertisements:</strong> {{ subscription.plan.advertisements|yesno:"Yes,No" }}</li>
+                <li class="list-group-item"><strong>Start Date:</strong> {{ subscription.start_date }}</li>
+                <li class="list-group-item"><strong>End Date:</strong> {{ subscription.end_date }}</li>
+                <li class="list-group-item"><strong>Subscription Status:</strong> {{ subscription.status }}</li>
+            </ul>
+            <hr>
+            <h3 class="card-title text-dark">Payment Details</h3>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong>Payment Status:</strong>
+                    {% if payment.status|lower == 'completed' %}
+                        <span class="badge bg-success">Paid</span>
+                    {% else %}
+                        <span class="badge bg-danger">Pending</span>
+                    {% endif %}
+                </li>
+                <li class="list-group-item"><strong>Transaction ID:</strong> {{ payment.transaction_id }}</li>
+                <li class="list-group-item"><strong>Amount Paid:</strong> ₹{{ payment.amount }}</li>
+                <li class="list-group-item"><strong>Payment Method:</strong> {{ payment.payment_method }}</li>
+                <li class="list-group-item"><strong>Payment Date and Time:</strong> {{ payment.payment_date }}</li>
+            </ul>
+            <a href="{% url 'view_subscription' %}" class="btn btn-danger mt-3">Back to Subscriptions</a>
+        </div>
+    </div>
+</div>
+
+<style>
+.confirm-card {
+    background-color: #ffffff;
+    color: #333;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.confirm-card .card-title {
+    font-size: 1.8rem;
+    color: #e50914;
+}
+
+.confirm-card ul {
+    text-align: left;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+hr {
+    margin: 20px 0;
+    border-top: 1px solid #ddd;
+}
+
+.badge.bg-success {
+    background-color: #28a745 !important;
+    color: #fff;
+    font-size: 14px;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+    color: #fff;
+    font-size: 14px;
+}
+</style>
+
+{% endblock %}

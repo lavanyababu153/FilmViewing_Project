@@ -1,0 +1,58 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-xl">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Add Plan</h5>
+                <small class="text-muted float-end">Default label</small>
+            </div>
+            <div class="card-body">
+             {% for i in u %}
+                <form action= "{% url 'plan_update' i.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <!-- Plan Name -->
+                    <div class="mb-3">
+                        <label class="form-label" for="plan-name">Plan Name</label>
+                        <input type="text" class="form-control" id="plan-name" name="name" value="{{i.name}}" required />
+                    </div>
+
+                    <!-- Duration -->
+                    <div class="mb-3">
+                        <label class="form-label" for="duration">Duration (Days)</label>
+                        <input class="form-control" type="number" name="duration_days" id="duration"  value="{{i.duration_days}}" required />
+                    </div>
+
+                    <!-- Price -->
+                    <div class="mb-3">
+                        <label class="form-label" for="price">Price</label>
+                        <input class="form-control" type="number" name="price" id="price" value="{{i.price}}" required />
+                    </div>
+
+                    <!-- Advertisements -->
+                    <div class="mb-3">
+                        <label class="form-label" for="advertisements">Advertisements</label>
+                        <select class="form-control" name="advertisements" id="advertisements" value="{{i.advertisements}}">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <!-- Streaming Quality -->
+                    <div class="mb-3">
+                        <label class="form-label" for="streaming-quality">Streaming Quality</label>
+                        <input class="form-control" type="text" name="streaming_quality" id="streaming-quality" value="{{i.streaming_quality}}"required />
+                    </div>
+                
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br><br>
+<br>
+
+<div class="card">
+  <h5 class="card-header">Manage Films</h5>
+  <div class="table-responsive text-nowrap">
+    <!-- genre name needs to show -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Genre</th>
+          <th>Image</th>
+          <th>Video</th>
+          <th>Director Name</th>
+          <th>Duration</th>
+          <th>Release Date</th>
+          <th>Description</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        {% for i in r %}
+          <tr>
+            <td> {{ i.movie_name }}</td>
+            <td> {{ i.movie_genre.name }}</td> <!-- Show genre name -->
+            <td> <img src="{{ i.movie_poster.url }}" alt="" style="height: 30px; width: 30px;"></td>
+            <td> 
+              <video height="100px" width="100px">
+                <source src="{{ i.movie_file.url }}" alt="">
+              </video>
+            </td>
+            <td> {{ i.director_name }}</td>
+            <td> {{ i.duration }}</td>
+            <td> {{ i.release_date }}</td>
+            <td style="max-width: 600px; min-width: 300px; white-space: normal; word-wrap: break-word; padding: 10px; text-align: justify;">
+              <p>{{ i.description }}</p>  <!-- Wrap description in a paragraph -->
+            </td>
+
+            <td>
+              <a href="{% url 'film_delete' i.id %}">
+                <button type="submit" class="btn btn-outline-danger">Delete</button>
+              </a>
+              <a href="{% url 'film_update' i.id %}">
+                <button type="submit" class="btn btn-outline-primary">Update</button>
+              </a>
+
+              <a href="{% url 'view_comment' i.id %}">
+                <button type="submit" class="btn btn-outline-primary">View comments</button>
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div> 
+</div>
+
+{% endblock %}

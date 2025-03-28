@@ -1,0 +1,640 @@
+{% load socialaccount %}
+
+<!DOCTYPE html>
+
+{% load static %}
+<!--[if IE 7]>
+<html class="ie ie7 no-js" lang="en-US">
+<![endif]-->
+<!--[if IE 8]>
+<html class="ie ie8 no-js" lang="en-US">
+<![endif]-->
+<!--[if !(IE 7) | !(IE 8)  ]><!-->
+<html lang="en" class="no-js">
+
+<!-- homev206:52-->
+<head>
+	<!-- Basic need -->
+	<title>Open Pediatrics</title>
+	<meta charset="UTF-8">
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<meta name="author" content="">
+	<link rel="profile" href="#">
+
+    <!--Google Font-->
+    <link rel="stylesheet" href='http://fonts.googleapis.com/css?family=Dosis:400,700,500|Nunito:300,400,600' />
+	<!-- Mobile specific meta -->
+	<meta name=viewport content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone-no">
+
+	<!-- CSS files -->
+	<link rel="stylesheet" href="{% static 'css/plugins.css'%}">
+	<link rel="stylesheet" href="{% static 'css/style.css'%}">
+
+</head>
+<body>
+<!--preloading-->
+<div id="preloader">
+    <img class="logo" src="{% static 'images/logo1.png'%}" alt="" width="119" height="58">
+    <div id="status">
+        <span></span>
+        <span></span>
+    </div>
+</div>
+<!--end of preloading-->
+<!--login form popup-->
+<div class="login-wrapper" id="login-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Login</h3>
+        <form method="post" action="{% url 'user_login'%}">
+        {% csrf_token %}
+        	<div class="row">
+                <label for="email-2">
+                    Your Email:
+                    <input type="email" name="email" id="email-2" placeholder="example@example.com" required="required" style="text-transform: none;" />
+                </label>
+            </div>
+           
+            <div class="row">
+            	<label for="password">
+                    Password:
+                    <input type="password" name="password" id="password" placeholder="******" pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required="required" />
+                </label>
+            </div>
+            <div class="row">
+            	<div class="remember">
+					<div>
+						<input type="checkbox" name="remember" value="Remember me"><span>Remember me</span>
+					</div>
+            		<a href="#">Forget password ?</a>
+            	</div>
+            </div>
+           <div class="row">
+           	 <button type="submit">Login</button>
+           </div>
+        </form>
+       <div class="row" style="text-align: center; justify-content: center; display: flex; flex-direction: column; align-items: center;">
+  
+</div>
+
+        </div>
+    </div>
+</div>
+<!--end of login form popup-->
+<!--signup form popup-->
+<div class="login-wrapper" id="signup-content">
+    <div class="login-content">
+        <a href="#" class="close">x</a>
+        <h3>Sign Up</h3>
+
+
+        <!-- Display Error Message -->
+        {% if error %}
+        <div class="alert alert-danger" role="alert" style="margin-bottom: 20px; padding: 10px; border-radius: 5px; background-color: #f8d7da; color: #721c24;">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        <form method="post" action="{% url 'signup' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Username -->
+            <div class="row">
+                <label for="username-2">
+                    Username:
+                    <input 
+                        type="text" 
+                        name="username" 
+                        id="username-2" 
+                        placeholder="Enter a unique username"
+                        pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" 
+                        required="required" 
+                        maxlength="100"
+                    />
+                </label>
+            </div>
+
+            <!-- Email -->
+            <div class="row">
+                <label for="email-2">
+                    Your Email:
+                    <input 
+                        type="email" 
+                        name="email" 
+                        id="email-2" 
+                        placeholder="example@example.com" 
+                        required="required" 
+                        maxlength="254" 
+                        style="text-transform: none;" 
+                    />
+                </label>
+            </div>
+
+            <!-- Phone -->
+            <div class="row">
+                <label for="phone">
+                    Phone:
+                    <input 
+                        type="text" 
+                        name="phone" 
+                        id="phone" 
+                        placeholder="Enter a 10-digit phone number" 
+                        required="required" 
+                        pattern="\d{10}" 
+                        maxlength="10"
+                    />
+                </label>
+            </div>
+
+            <!-- Avatar -->
+            <div class="row">
+                <label for="avatar">
+                    Avatar:
+                    <input 
+                        type="file" 
+                        name="avatar" 
+                        id="avatar" 
+                        accept="image/*" 
+                        style="padding: 5px;"
+                    />
+                </label>
+            </div>
+
+            <!-- Password -->
+            <div class="row">
+                <label for="password-2">
+                    Password:
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="password-2" 
+                        placeholder="Create a strong password" 
+                        required="required" 
+                        minlength="8" 
+                        maxlength="20" 
+                        style="text-transform: none;" 
+                    />
+                </label>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="row">
+                <label for="repassword-2">
+                    Re-type Password:
+                    <input 
+                        type="password" 
+                        name="repassword" 
+                        id="repassword-2" 
+                        placeholder="Re-enter your password" 
+                        required="required" 
+                        minlength="8" 
+                        maxlength="20" 
+                        style="text-transform: none;" 
+                    />
+                </label>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="row">
+                <button type="submit" style="background-color:rgb(228, 28, 28); color: #fff; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                    Sign Up
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+<!--end of signup form popup-->
+
+<!-- BEGIN | Header -->
+<header class="ht-header full-width-hd" >
+		<div class="row">
+			<nav id="mainNav" class="navbar navbar-default navbar-custom" >
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header logo">
+				    <div class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					    <span class="sr-only">Toggle navigation</span>
+					    <div id="nav-icon1">
+							<span></span>
+							<span></span>
+							<span></span>
+						</div>
+				    </div>
+				    <a href="index-2.html"><img class="logo" src="{% static 'images/logo1.png'%}" alt="" width="119" height="58"></a>
+			    </div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse flex-parent" id="bs-example-navbar-collapse-1" >
+					<ul class="nav navbar-nav flex-child-menu menu-left" >
+						<li class="hidden">
+							<a href="#page-top" ></a>
+
+						</li>
+
+
+                        <li>
+
+
+                        {% block search %}
+
+<div class="navbar-search">
+    <form method="GET" action="{% url 'movie_search' %}">
+        <div class="search-container">
+            <input type="text" class="form-control" name="q" placeholder="Search by movie or genre..." value="{{ query }}">
+            <button type="submit" class="submit-btn">
+                Search
+            </button>
+        </div>
+    </form>
+</div>
+
+<style>
+/* Search bar container styling */
+.navbar-search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* Center the search bar in the navbar */
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background: transparent; /* Fully transparent */
+    border: 2px solid rgba(255, 255, 255, 0.3); /* Subtle border */
+    border-radius: 50px; /* Oval shape */
+    padding: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Soft shadow */
+}
+
+/* Oval and transparent input field */
+.search-input {
+    background: transparent; /* Transparent input */
+    border: none;
+    color: gray; /* Gray text */
+    font-size: 14px;
+    padding: 10px 15px;
+    width: 100%;
+    outline: none;
+    border-radius: 50px; /* Oval shape */
+}
+
+
+
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .search-input {
+        width: 200px;
+    }
+}
+/* Button styling */
+.submit-btn {
+    background-color: #dd003f; /* Semi-transparent Netflix red */
+    color: white;
+    border: none;
+    border-radius: 50px; /* Oval-shaped button */
+    font-size: 13px;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease; /* Smooth hover transition */
+    text-transform: uppercase; /* Capitalize button text */
+}
+
+/* Button hover effect */
+.submit-btn:hover {
+    background-color: rgba(244, 6, 18, 0.9); /* Slightly darker red on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .form-select {
+        width: 200px; /* Smaller dropdown on mobile */
+    }
+    .submit-btn {
+        padding: 8px 15px; /* Adjust padding for smaller screens */
+    }
+}
+</style>
+
+{% endblock %}
+
+
+
+
+
+                        </li>
+						<li><a href="{% url 'user_home' %}">Home</a></li> 
+						<li><a href="{% url 'Films' %}">Movie</a></li>
+
+						<ul class="nav navbar-nav flex-child-menu menu-right">
+    					<li><a href="{% url 'plan_details' %}">Choose your plan</a></li>
+    					{% if user_name %}
+        					<li><a href="#">Hii, {{ user_name }}</a></li> 
+        					
+        					<li><a href="{% url 'view_profile' %}">View Profile</a></li> 
+        					<li><a href="{% url 'user_logout' %}">Logout</a></li>
+    					{% else %}
+        					<li class="loginLink"><a href="#">LOG In</a></li>
+        					<li class="btn signupLink"><a href="#">sign up</a></li>
+    				{% endif %}
+				</ul>
+
+	
+
+
+
+</header>
+
+
+{% block content1 %}
+<!-- END | Header -->
+
+
+<div class="slider sliderv2">
+    <div class="container">
+        <div class="row">
+            <div class="slider-single-item">
+                {% for movie in recent_movies %}
+                <div class="movie-item">
+                    <div class="row">
+                        <!-- Movie Details -->
+                        <div class="col-md-8 col-sm-12 col-xs-12">
+                            <div class="title-in">
+                                <div class="cate">
+                                    {% for genre in movie.movie_genre.all %}
+                                    <span class="blue"><a href="#">{{ genre.name }}</a></span>
+                                    {% endfor %}
+                                </div>
+                                <h1><a href="#">{{ movie.movie_name }} <span>{{ movie.release_date.year }}</span></a></h1>
+                                <div class="social-btn">
+                                  
+                                    <div class="hover-bnt">
+                                        
+                                        <div class="hvr-item">
+                                            
+                                        </div>
+                                    </div>		
+                                </div>
+                                <div class="mv-details">
+                                    <p><i class="ion-android-star"></i><span>{{ movie.like_count }}</span> Likes</p>
+                                    <ul class="mv-infor">
+                                        <li> Duration: {{ movie.duration }} mins </li>
+                                        <li> Release: {{ movie.release_date }}</li>
+                                    </ul>
+                                </div>
+                                	
+                            </div>
+                        </div>
+                        <!-- Movie Poster -->
+                        <div class="col-md-4 col-sm-12 col-xs-12">
+                            <div class="mv-img-2">
+                                <a href="#"><img src="{{ movie.movie_poster.url }}" alt="{{ movie.movie_name }}"></a>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+
+
+ {% block content %}
+
+ 
+
+
+
+
+<!-- Movie Details -->
+<!-- Netflix-Style Movie Items -->
+<!-- Netflix-Style Slider -->
+<div class="movie-items full-width netflix-style">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tabs">
+                <div class="tab-content">
+                    <div id="tab1-h2" class="tab active">
+                        <div class="row">
+                            <div class="movie-slider">
+                                {% for i in movie %}
+                                    <div class="movie-card">
+                                        <div class="movie-poster">
+                                            <img src="{{ i.movie_poster.url }}" alt="{{ i.movie_name }}">
+                                        </div>
+                                        <div class="movie-info">
+                                            <h6 class="movie-title">{{ i.movie_name }}</h6>
+                                            <p class="movie-director">Directed by {{ i.director_name }}</p>
+                                            
+                                            
+
+                                            <!-- Read More -->
+                                            <a href="{% url 'movie_details' i.id %}" class="btn-watch">Read more</a>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Responsive Netflix-Style CSS -->
+<style>
+/* General Netflix Style */
+.netflix-style {
+    background-color: black;
+    color: #fff;
+    padding: 20px;
+}
+
+.movie-slider {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+}
+
+.movie-card {
+    flex: 0 0 calc(25% - 20px); /* Default: 4 cards per row */
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #1e1e1e;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.movie-card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+}
+
+.movie-poster img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+.movie-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.movie-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #fff;
+    text-transform: capitalize;
+}
+
+.movie-director {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.btn-watch {
+    font-size: 14px;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    background: #e50914;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.btn-watch:hover {
+    background-color: #f40612;
+}
+
+/* Responsive Behavior */
+@media (max-width: 1200px) {
+    .movie-card {
+        flex: 0 0 calc(33.33% - 20px); /* 3 items per row on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .movie-card {
+        flex: 0 0 calc(50% - 20px); /* 2 items per row on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-slider {
+        display: block; /* Switch to vertical layout */
+    }
+
+    .movie-card {
+        width: 100%; /* Take up the full width */
+        margin-bottom: 20px; /* Add spacing between cards */
+    }
+}
+
+
+.wishlist-icon {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.btn-heart {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+    transition: color 0.3s;
+}
+
+.btn-heart:hover {
+    color: #e50914; /* Highlight on hover */
+}
+
+.btn-heart .fas {
+    transition: transform 0.3s;
+}
+
+.btn-heart:hover .fas {
+    transform: scale(1.2); /* Slight zoom on hover */
+}
+
+
+</style>
+
+
+
+ {% endblock %}
+
+<!--end of latest new v2 section-->
+<!-- footer v2 section-->
+<footer class="ht-footer full-width-ft">
+	<div class="row">
+		<div class="flex-parent-ft">
+			<div class="flex-child-ft item1">
+				 <a href="index-2.html"><img class="logo" src="{% static 'images/logo1.png'%}" alt=""></a>
+				
+		
+			<div class="flex-child-ft item4">
+				<h4>Account</h4>
+				<ul>
+					<li><a href="#">My Account</a></li>
+					<li><a href="#">Watchlist</a></li>	
+					<li><a href="#">Contact us</a></li>
+					<li><a href="#">User Guide</a></li>
+				</ul>
+			</div>
+			<div class="flex-child-ft item5">
+				<h4>Newsletter</h4>
+				<p>Subscribe to our newsletter system now <br> to get latest news from us.</p>
+				<form action="#">
+                {% csrf_token %}
+					<input type="text" placeholder="Enter your email">
+				</form>
+				<a href="{% url 'login_error' %}" class="btn">Subscribe now <i class="ion-ios-arrow-forward"></i></a>
+			</div>
+		</div>
+		<div class="ft-copyright">
+			<div class="ft-left">
+				<p><a target="_blank" href="https://www.templateshub.net">Templates Hub</a></p>
+			</div>
+			<div class="backtotop">
+				<p><a href="#" id="back-to-top">Back to top  <i class="ion-ios-arrow-thin-up"></i></a></p>
+			</div>
+		</div>
+	</div>
+</footer>
+<!-- end of footer v2 section-->
+
+<script src="{% static 'js/jquery.js'%}"></script>
+<script src="{% static 'js/plugins.js'%}"></script>
+<script src="{% static 'js/plugins2.js'%}"></script>
+<script src="{% static 'js/custom.js'%}"></script>
+</body>
+
+<!-- homev207:28-->
+</html>

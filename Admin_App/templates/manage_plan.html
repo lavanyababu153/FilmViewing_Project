@@ -1,0 +1,40 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br>
+<br>
+
+<div class="card">
+  <h5 class="card-header">Manage Plan</h5>
+  <div class="table-responsive text-nowrap">
+    <!-- genre name needs to show -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Plan Name</th>
+          <th>Duration (Days)</th>
+          <th>Price</th>
+          <th>Advertisements</th>
+          <th>Streaming Quality</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+
+        {% for i in p%}
+          <tr>
+            <td> {{ i.name }}</td> 
+            <td> {{ i.duration_days }}</td>
+            <td> {{ i.price }}</td>
+            <td> {{ i.advertisements}}</td>
+            <td> {{ i.streaming_quality}}</td>
+            <td><a href="{% url 'delete_plan' i.id %}"><button type="submit" class="btn btn-outline-danger">Delete</button></a>
+            <a href="{% url 'update_plan' i.id %}"><button type="submit"class="btn btn-outline-primary">Update</button><a><td>              
+
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

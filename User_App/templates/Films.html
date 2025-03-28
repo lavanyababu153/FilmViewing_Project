@@ -1,0 +1,186 @@
+{% extends 'user_home.html' %}
+
+{% block content1 %}
+{% block search %}
+{% endblock %}
+<br><br>
+<br>
+<br>
+
+<!-- Netflix-Style Movies Section -->
+
+
+<!-- Movies by Genre Sections -->
+{% for genre in genres %}
+  <div class="genre-section netflix-style">
+  <br>
+    <h5>{{ genre.name }} Movies</h5>
+    <br>
+   
+    <div class="movie-slider">
+      {% for film in genre.movie_set.all %}
+        <div class="movie-card">
+          <div class="movie-poster">
+            <img src="{{ film.movie_poster.url }}" alt="{{ film.movie_name }}">
+          </div>
+          <div class="movie-info">
+            <h6 class="movie-title">{{ film.movie_name }}</h6>
+            <p class="movie-director">Released on {{ film.release_date }}</p>
+            <a href="{% url 'movie_details' film.id %}" class="btn-watch">Read more</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <br><br>
+{% endfor %}
+
+<style>
+/* General Netflix Style */
+
+
+
+
+header {
+    background-color:rgba(11, 92, 143, 0.33); /* New background color */
+    color: #fff; /* Text color for better contrast */
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Optional shadow */
+}
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color:rgb(0, 0, 0);
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+
+/* Movie Details Page */
+.movie-details-page {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #333;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+.netflix-style {
+    background-color: black;
+    color: #fff;
+    padding: 20px;
+}
+
+.movie-slider {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.movie-card {
+    flex: 0 0 calc(25% - 20px); /* Default: 4 cards per row */
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #1e1e1e;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.movie-card:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.5);
+}
+
+.movie-poster img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px 10px 0 0;
+}
+
+.movie-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.movie-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #fff;
+    text-transform: capitalize;
+}
+
+.movie-director {
+    font-size: 14px;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.btn-watch {
+    font-size: 14px;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px 10px;
+    background: #e50914;
+    border-radius: 5px;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.btn-watch:hover {
+    background-color: #f40612;
+}
+
+/* Responsive Behavior */
+@media (max-width: 1200px) {
+    .movie-card {
+        flex: 0 0 calc(33.33% - 20px); /* 3 items per row on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .movie-card {
+        flex: 0 0 calc(50% - 20px); /* 2 items per row on small screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-slider {
+        display: block;
+    }
+
+    .movie-card {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+.wishlist-icon {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.btn-heart {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+    transition: color 0.3s;
+}
+
+.btn-heart:hover {
+    color: #e50914;
+}
+
+.btn-heart .fas {
+    transition: transform 0.3s;
+}
+
+.btn-heart:hover .fas {
+    transform: scale(1.2);
+}
+
+</style>
+
+{% endblock %}

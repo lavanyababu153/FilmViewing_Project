@@ -1,0 +1,40 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+
+<div class="card">
+  <h5 class="card-header">Manage Cast</h5>
+  <div class="table-responsive text-nowrap">
+    <!-- genre name needs to show -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Movie</th>
+          <th>Role</th>
+          <th>Image</th>
+         
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        {% for i in j %}
+          <tr>
+            <td> {{ i.name }}</td>
+            <td> {{ i.movie.movie_name }}</td>
+            <td> {{ i.role }}</td> <!-- Show genre name -->
+            <td> <img src="{{ i.image.url }}" alt="" style="height: 30px; width: 30px;"></td>
+            <td>
+              <a href="{% url 'cast_delete' i.id %}">
+                <button type="submit" class="btn btn-outline-danger">Delete</button>
+              </a>
+              <a href="{% url 'update_cast' i.id %}">
+                <button type="submit" class="btn btn-outline-primary">Update</button>
+              </a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

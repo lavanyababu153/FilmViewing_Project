@@ -1,0 +1,126 @@
+{% extends 'user_home.html' %}
+{% block content1 %}
+{% block search %}
+{% endblock %}
+<br><br><br><br>
+
+<!-- Heading outside the header -->
+<div class="container my-5">
+<br>
+<br>
+    <h1 class="text-center mb-4 text-white">Choose Your Plan</h1>
+</div>
+
+<!-- Subscription Plans Section -->
+<div class="container my-5">
+<br>
+    <div class="row justify-content-center">
+        {% for plan in plans %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-lg border-0 rounded-4 plan-card">
+                <div class="card-body text-center">
+                <br>
+                    <h5 class="card-title text-dark">{{ plan.name }}</h5>
+                    <p class="card-text text-dark">
+                        <strong>Price:</strong> {{ plan.price }} <br>
+                        <strong>Duration:</strong> {{ plan.duration_days }} days <br>
+                        <strong>Quality:</strong> {{ plan.streaming_quality }} <br>
+                        <strong>Advertisements:</strong> {{ plan.advertisements|yesno:"Yes,No" }} <br>
+                    </p>
+                    <!-- Form to handle subscription -->
+                    <form method="post" action="{% url 'add_subscription' plan.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger w-100 mt-3 subscribe-btn">
+                            Subscribe
+                        </button>
+                        <br>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    {% if messages %}
+      {% for message in messages %}
+        {% if message.tags == 'warning' %}
+          Swal.fire({
+            icon: 'warning',
+            title: 'Warning',
+            text: '{{ message }}',
+            showConfirmButton: true,
+          });
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+</script>
+
+<style>
+/* Global Styles */
+header {
+    background-color: rgba(11, 92, 143, 0.33); /* New background color */
+    color: #fff; /* Text color for better contrast */
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Optional shadow */
+}
+
+body {
+    background-color: rgb(5, 3, 3); /* Dark background */
+    font-family: 'Roboto', sans-serif;
+    color: #fff;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+    color: white;
+}
+
+/* Card Styles */
+.plan-card {
+    background-color: #ffffff;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    overflow: hidden;
+    color: #333;
+}
+
+.plan-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    border-color: #e50914;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #e50914;
+}
+
+.subscribe-btn {
+    background-color: #e50914;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.subscribe-btn:hover {
+    background-color: #f40612;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.card-text {
+    color: black;
+}
+</style>
+
+{% endblock %}

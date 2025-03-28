@@ -1,0 +1,63 @@
+{% extends 'Admin_home.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center text-dark">Update Admin Profile</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body">
+                    <!-- Form for updating profile -->
+
+                    <form method="post"  action="{% url 'profile_update' %}"enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" id="username" class="form-control" value="{{ admin.username }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" name="email" id="email" class="form-control" value="{{ admin.email }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="text" name="phone" id="phone" class="form-control" value="{{ admin.phone }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="avatar">Avatar</label>
+                            <input type="file" name="avatar" id="avatar" class="form-control-file">
+                            {% if admin.avatar %}
+                                <img src="{{ admin.avatar.url }}" alt="Current Avatar" class="img-fluid rounded-circle mb-3" style="width: 100px; height: 100px;">
+                            {% endif %}
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Leave empty to keep the current password">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="repassword">Confirm Password</label>
+                            <input type="password" name="repassword" id="repassword" class="form-control" placeholder="Confirm new password">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-3">Update Profile</button>
+                    </form>
+
+                    {% if error %}
+                    <div class="alert alert-danger mt-3">{{ error }}</div>
+                    {% endif %}
+
+                    <hr>
+                    <a href="{% url 'admin_profile' %}" class="btn btn-danger mt-3">Back to Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

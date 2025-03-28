@@ -1,0 +1,59 @@
+{% extends 'Admin_home.html' %}
+{% block content %}
+<br><br>
+<div class="row">
+    <div class="col-xl">
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Add Actor Details</h5>
+                <small class="text-muted float-end">Default label</small>
+            </div>
+            <div class="card-body">
+                {% for i in d %}
+                <form action="{% url 'cast_update' i.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-default-fullname">Name</label>
+                        <input type="text" class="form-control" id="basic-default-fullname" name="name" value="{{ i.name }}" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="largeSelect" class="form-label">Movie</label>
+                        <select id="largeSelect" class="form-select form-select-lg" name="movie_name">
+                            <option>Choose Movie</option>
+                            {% for movie in  g %}
+                                <option value="{{ movie.id }}" {% if movie.id == i.movie.id %}selected{% endif %}>
+                                    {{ movie.movie_name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3 row">
+                        <label for="html5-time-input" class="col-md-2 col-form-label">Role</label>
+                        <div class="col-md-10">
+                            <input class="form-control" type="text" name="role" id="html5-time-input" value="{{ i.role }}" />
+                        </div>
+                    </div>
+
+                   
+              <div class="mb-3">
+                <label for="formFile" class="form-label">Upload Image</label>
+                
+                {% if i.image %}
+                  <div>
+                    <img src="{{ i.image.url }}" alt="Current Image" style="max-width: 200px;"/>
+                  </div>
+                {% endif %}
+
+                <input class="form-control" type="file" name="image" id="formFile" />
+              </div>
+
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
